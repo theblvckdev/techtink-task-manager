@@ -74,14 +74,15 @@ const Homepage = () => {
 
   // Function to filter tasks based on search query
   const filterTasksByQuery = (tasks: TaskDataProps[]) => {
-    return tasks.filter((task) =>
-      task.name.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    if (searchQuery) {
+      return tasks.filter((task) =>
+        task.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    return tasks;
   };
 
-  const pendingTasks = filterTasksByQuery(
-    tasks.filter((task) => !task.completed)
-  );
+  // Separate pending and completed tasks, and apply search filtering
   const completedTasks = filterTasksByQuery(
     tasks.filter((task) => task.completed)
   );
@@ -103,20 +104,22 @@ const Homepage = () => {
 
         <div className="mt-5">
           <div className="grid xl:grid-cols-2 md:grid-cols-1 gap-3">
-            {pendingTasks.length > 0 ? (
-              pendingTasks.map((task) => (
-                <TaskCard
-                  key={task.id}
-                  id={task.id}
-                  name={task.name}
-                  description={task.description}
-                  completed={task.completed}
-                  onTaskDelete={handleDeleteTask}
-                  onTaskComplete={handleCompleteTask}
-                  createdAt={task.createdAt}
-                  onTaskEdit={handleEditTask} // Pass the edit handler to the TaskCard
-                />
-              ))
+            {tasks.length > 0 ? (
+              tasks
+                .filter((task) => !task.completed)
+                .map((task) => (
+                  <TaskCard
+                    key={task.id}
+                    id={task.id}
+                    name={task.name}
+                    description={task.description}
+                    completed={task.completed}
+                    onTaskDelete={handleDeleteTask}
+                    onTaskComplete={handleCompleteTask}
+                    createdAt={task.createdAt}
+                    onTaskEdit={handleEditTask} // Pass the edit handler to the TaskCard
+                  />
+                ))
             ) : (
               <p className="text-gray-500 col-span-2">
                 No pending tasks available
@@ -151,7 +154,11 @@ const Homepage = () => {
 
         <div className="mt-5">
           <div className="grid xl:grid-cols-2 md:grid-cols-1 gap-3">
-            {completedTasks.length > 0 ? (
+            {searchQuery && completedTasks.length === 0 ? (
+              <p className="text-gray-500 col-span-2">
+                No completed tasks with title {searchQuery} found
+              </p>
+            ) : completedTasks.length > 0 ? (
               completedTasks.map((task) => (
                 <TaskCard
                   key={task.id}

@@ -45,6 +45,9 @@ const TaskCard = ({
 
   // Format the createdAt property
   const formattedDate = new Date(createdAt).toLocaleString("en-GB", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
   });
@@ -69,13 +72,17 @@ const TaskCard = ({
             <CardTitle className="truncate text-base max-w-[200px]">
               {name}
             </CardTitle>
-            <div className="text-xs flex flex-row items-center gap-2">
+            <div className="text-xs md:flex-col md:items-start flex flex-row items-center md:gap-2">
               <div>Created {formattedDate}</div>
-              <div>|</div>
+
               {completed ? (
-                <div className="text-green-500">Completed</div>
+                <div className="bg-green-500 text-white leading-[1px] absolute bottom-0 left-0 m-2 p-2.5 shadow rounded-sm">
+                  Completed
+                </div>
               ) : (
-                <div className="text-yellow-500">Pending</div>
+                <div className="bg-yellow-500 text-white leading-[1px] absolute bottom-0 left-0 m-2 p-2.5 shadow rounded-sm">
+                  Pending
+                </div>
               )}
             </div>
           </div>
