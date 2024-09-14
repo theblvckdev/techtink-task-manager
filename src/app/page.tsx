@@ -47,6 +47,17 @@ const Homepage = () => {
     });
   };
 
+  // Function to handle undoing a completed task
+  const handleUndoCompletion = (taskId: number) => {
+    setTasks((prevTasks) => {
+      const updatedTasks = prevTasks.map((task) =>
+        task.id === taskId ? { ...task, completed: false } : task
+      );
+      localStorage.setItem("tasks", JSON.stringify(updatedTasks)); // Update local storage when a task is undone
+      return updatedTasks;
+    });
+  };
+
   // Function to handle editing a task
   const handleEditTask = (
     taskId: number,
@@ -110,6 +121,7 @@ const Homepage = () => {
                 .map((task) => (
                   <TaskCard
                     key={task.id}
+                    onUndoCompletion={handleUndoCompletion}
                     id={task.id}
                     name={task.name}
                     description={task.description}
@@ -168,8 +180,10 @@ const Homepage = () => {
                   description={task.description}
                   completed={task.completed}
                   onTaskDelete={handleDeleteTask}
+                  task={tasks}
+                  onUndoCompletion={handleUndoCompletion}
                   onTaskComplete={handleCompleteTask}
-                  onTaskEdit={handleEditTask} // Pass the edit handler to the TaskCard
+                  onTaskEdit={handleEditTask}
                 />
               ))
             ) : (

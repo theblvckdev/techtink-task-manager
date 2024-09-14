@@ -7,18 +7,21 @@ import { Button } from "../ui/button";
 import { Check } from "lucide-react";
 import { DeleteTaskAlertDialog } from "./deleteTaskAlertDialog";
 import { useToast } from "@/hooks/use-toast";
+import { UndoTaskCompletionAlertDialog } from "./undoTaskCompletionDialog";
 
 interface TaskDataProps {
   id: number;
   name: string;
   description: string;
   completed: boolean;
-  createdAt: number; // This is a Unix timestamp
+  createdAt: number;
 }
 
 interface TaskCardProps extends TaskDataProps {
+  task?: TaskDataProps[] | undefined;
   onTaskDelete: (taskId: number) => void;
   onTaskComplete: (taskId: number) => void;
+  onUndoCompletion: (taskId: number) => void; // Corrected Typo
   onTaskEdit: (taskId: number, newName: string, newDescription: string) => void;
 }
 
@@ -29,8 +32,10 @@ const TaskCard = ({
   completed,
   onTaskDelete,
   onTaskComplete,
+  onUndoCompletion, // Corrected Typo
   onTaskEdit,
   createdAt,
+  task,
 }: TaskCardProps) => {
   const { toast } = useToast();
 
@@ -55,16 +60,22 @@ const TaskCard = ({
   return (
     <>
       <Card className="shadow-sm overflow-hidden relative min-h-[200px]">
-        {!completed && (
+        {!completed ? (
           <Button
             onClick={completeTask}
             variant="link"
             size="sm"
-            title={completed ? "undo completed task" : "complete task"}
+            title="Complete task"
             className="text-xs absolute bottom-0 right-0 m-2 no-underline duration-300 ease-in py-1 px-2 outline-none bg-gray-100"
           >
             <Check size={16} strokeWidth={1} />
           </Button>
+        ) : (
+          <UndoTaskCompletionAlertDialog
+            taskId={id}
+            tasks={task}
+            onToggleComplete={() => onUndoCompletion(id)} // Correctly passed handler for undo
+          />
         )}
 
         <CardHeader className="p-3 flex items-center flex-row">
@@ -75,15 +86,13 @@ const TaskCard = ({
             <div className="text-xs md:flex-col md:items-start flex flex-row items-center md:gap-2">
               <div>Created {formattedDate}</div>
 
-              {completed ? (
-                <div className="bg-green-500 text-white leading-[1px] absolute bottom-0 left-0 m-2 p-2.5 shadow rounded-sm">
-                  Completed
-                </div>
-              ) : (
-                <div className="bg-yellow-500 text-white leading-[1px] absolute bottom-0 left-0 m-2 p-2.5 shadow rounded-sm">
-                  Pending
-                </div>
-              )}
+              <div
+                className={`${
+                  completed ? "bg-green-500" : "bg-yellow-500"
+                } text-white leading-[1px] absolute bottom-0 left-0 m-2 p-2.5 shadow rounded-sm`}
+              >
+                {completed ? "Completed" : "Pending"}
+              </div>
             </div>
           </div>
 
