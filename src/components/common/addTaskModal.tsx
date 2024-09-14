@@ -49,6 +49,7 @@ export function AddTaskDialog({ onAddTask }: AddTaskDialogProps) {
       name: taskName,
       description: taskDescription,
       completed: false,
+      createdAt: Date.now(),
     };
 
     // Get existing tasks from local storage

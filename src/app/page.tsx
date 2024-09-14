@@ -11,6 +11,7 @@ export interface TaskDataProps {
   name: string;
   description: string;
   completed: boolean;
+  createdAt: number;
 }
 
 const Homepage = () => {
@@ -112,6 +113,7 @@ const Homepage = () => {
                   completed={task.completed}
                   onTaskDelete={handleDeleteTask}
                   onTaskComplete={handleCompleteTask}
+                  createdAt={task.createdAt}
                   onTaskEdit={handleEditTask} // Pass the edit handler to the TaskCard
                 />
               ))
@@ -153,6 +155,7 @@ const Homepage = () => {
               completedTasks.map((task) => (
                 <TaskCard
                   key={task.id}
+                  createdAt={task.createdAt}
                   id={task.id}
                   name={task.name}
                   description={task.description}

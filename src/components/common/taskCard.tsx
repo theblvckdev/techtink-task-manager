@@ -13,6 +13,7 @@ interface TaskDataProps {
   name: string;
   description: string;
   completed: boolean;
+  createdAt: number; // This is a Unix timestamp
 }
 
 interface TaskCardProps extends TaskDataProps {
@@ -29,6 +30,7 @@ const TaskCard = ({
   onTaskDelete,
   onTaskComplete,
   onTaskEdit,
+  createdAt,
 }: TaskCardProps) => {
   const { toast } = useToast();
 
@@ -40,6 +42,12 @@ const TaskCard = ({
       description: "Your task has been marked as completed",
     });
   };
+
+  // Format the createdAt property
+  const formattedDate = new Date(createdAt).toLocaleString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
   return (
     <>
@@ -62,7 +70,7 @@ const TaskCard = ({
               {name}
             </CardTitle>
             <div className="text-xs flex flex-row items-center gap-2">
-              <div>Created 4:54 PM</div>
+              <div>Created {formattedDate}</div>
               <div>|</div>
               {completed ? (
                 <div className="text-green-500">Completed</div>
