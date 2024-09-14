@@ -115,7 +115,7 @@ const Homepage = () => {
 
         <div className="mt-5">
           <div className="grid xl:grid-cols-2 md:grid-cols-1 gap-3">
-            {tasks.length > 0 ? (
+            {tasks.filter((task) => !task.completed).length > 0 ? (
               tasks
                 .filter((task) => !task.completed)
                 .map((task) => (
