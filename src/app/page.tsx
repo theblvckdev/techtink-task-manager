@@ -86,7 +86,7 @@ const Homepage = () => {
   );
 
   return (
-    <main className="lg:min-h-screen bg-gray-50 flex lg:flex-row flex-col gap-4">
+    <main className="min-h-screen bg-gray-50 flex lg:flex-row flex-col gap-4">
       <div className="lg:basis-1/2 p-4">
         <div className="flex flex-row items-center">
           <div className="mr-auto">
