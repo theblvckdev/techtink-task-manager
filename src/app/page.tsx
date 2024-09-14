@@ -82,7 +82,7 @@ const Homepage = () => {
     return tasks;
   };
 
-  // Separate pending and completed tasks, and apply search filtering
+  // Separate completed tasks, and apply search filtering
   const completedTasks = filterTasksByQuery(
     tasks.filter((task) => task.completed)
   );
